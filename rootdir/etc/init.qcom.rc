@@ -25,8 +25,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import init.qcom.usb.rc
-import init.target.rc
+import /vendor/etc/init/hw/init.qcom.usb.rc
+import /vendor/etc/init/hw/init.target.rc
 
 on early-init
     # Create firmware mount point
@@ -61,7 +61,7 @@ on fs
     wait /dev/block/platform/${ro.boot.bootdevice}
     symlink /dev/block/platform/${ro.boot.bootdevice} /dev/block/bootdevice
 
-    mount_all fstab.qcom
+    mount_all /vendor/etc/fstab.qcom
     write /sys/kernel/boot_adsp/boot 1
 
     # Create a dump of PDS and mount it
@@ -454,7 +454,7 @@ on property:bluetooth.hciattach=false
 on property:bluetooth.hciattach=true
     start hciattach
 
-service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
+service hciattach /vendor/bin/init.qcom.bt.sh
     class late_start
     user bluetooth
     group bluetooth net_bt_admin
@@ -472,12 +472,12 @@ service location_mq /vendor/bin/location-mq
     group gps
     disabled
 
-service mmi-boot-sh /system/bin/sh /init.mmi.boot.sh
+service mmi-boot-sh /vendor/bin/init.mmi.boot.sh
     class core
     user root
     oneshot
 
-service dump_pds /system/bin/dump_pds.sh
+service dump_pds /vendor/bin/dump_pds.sh
     user root
     group cache
     disabled
@@ -490,13 +490,13 @@ service ril-daemon1 /vendor/bin/hw/rild -c 2
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
     disabled
 
-service rild1-wrapper /system/bin/sh /system/etc/init.qcom.ril.sh
+service rild1-wrapper /vendor/bin/init.qcom.ril.sh
     class late_start
     user root
     group root
     oneshot
 
-service mmi-touch-sh /system/bin/sh /init.mmi.touch.sh synaptics aps
+service mmi-touch-sh /vendor/bin/init.mmi.touch.sh synaptics aps
     class late_start
     user root
     oneshot
