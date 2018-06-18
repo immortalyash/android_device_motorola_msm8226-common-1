@@ -72,8 +72,11 @@ on fs
     restorecon /pds
 
     # activate zram
-    swapon_all fstab.qcom
     write /proc/sys/vm/page-cluster 0
+
+on property:sys.boot_completed=1
+    # Enable ZRAM on boot_complete
+    swapon_all fstab.qcom
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -148,6 +151,12 @@ on post-fs-data
 
    # Create moodle directory that MOODLE APP can write to
     mkdir /data/local/moodle 0770 graphics oem_5004
+
+    # Create perfd deamon related dirs
+    mkdir /data/misc/perfd 0755 root system
+    chmod 2755 /data/misc/perfd
+    mkdir /data/system/perfd 0770 root system
+    chmod 2770 /data/system/perfd
 
     # services directory for activation
     mkdir /pds/public/svcs 0770 system oem_5004
@@ -439,11 +448,6 @@ service atvc /vendor/bin/dbvc_atvc_property_set
     group oem_5007
     oneshot
 
-service audiod /system/bin/audiod
-    class late_start
-    user system
-    group system
-
 on property:bluetooth.hciattach=false
     setprop bluetooth.status off
 
@@ -504,7 +508,7 @@ service charger /charger
 
 service mpdecision /vendor/bin/mpdecision --avg_comp
     user root
-    group root system
+    group root readproc
     disabled
 
 on property:ro.use_data_netmgrd=false
@@ -543,7 +547,7 @@ service rmt_storage /vendor/bin/rmt_storage
 on property:persist.sys.qc.sub.rdump.on=*
    write /sys/module/subsystem_restart/parameters/enable_ramdumps ${persist.sys.qc.sub.rdump.on}
 
-service thermal-engine /vendor/bin/thermal-engine -c /etc/thermal-engine-8226.conf
+service thermal-engine /vendor/bin/thermal-engine -c /vendor/etc/thermal-engine-8226.conf
     class main
     user root
     group root
