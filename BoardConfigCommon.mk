@@ -70,9 +70,9 @@ BLUETOOTH_HCI_USE_MCT := true
 
 # Camera
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
-#TARGET_USES_NON_TREBLE_CAMERA := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 TARGET_USES_MEDIA_EXTENSIONS := true
+TARGET_PROVIDES_CAMERA_HAL := true
 
 # Charger
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/mmi_lpm/lpm_mode
@@ -93,8 +93,15 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 TARGET_ALLOW_LEGACY_AIDS := true
 TARGET_FS_CONFIG_GEN := $(VENDOR_PATH)/config.fs
 
+# Extended Filesystem Support
+TARGET_EXFAT_DRIVER := exfat
+
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
+
+# HIDL
+DEVICE_MANIFEST_FILE := $(VENDOR_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(VENDOR_PATH)/compatibility_matrix.xml
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -152,7 +159,13 @@ WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
 BOARD_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy
 
 # Shims
-TARGET_LD_SHIM_LIBS := /system/vendor/bin/thermal-engine|libshims_thermal.so:/system/vendor/bin/mpdecision|libshims_atomic.so:/system/lib/hw/camera.vendor.msm8226.so|libshims_camera.so:/system/lib/libmot_sensorlistener.so|libshims_sensorlistener.so:/system/vendor/lib/libqc-opt.so|libshim_qcopt.so:/system/vendor/lib/libqc-opt.so|libshims_sensorlistener.so
+TARGET_LD_SHIM_LIBS := \
+    /system/vendor/bin/thermal-engine|libshims_thermal.so \
+    /system/vendor/bin/mpdecision|libshims_atomic.so \
+    /system/lib/hw/camera.vendor.msm8226.so|libshims_camera.so \
+    /system/lib/libmot_sensorlistener.so|libshims_sensorlistener.so \
+    /system/vendor/lib/libqc-opt.so|libshim_qcopt.so \
+    /system/vendor/lib/libqc-opt.so|libshims_sensorlistener.so
 
 # Wifi
 BOARD_HAS_QCOM_WLAN := true
