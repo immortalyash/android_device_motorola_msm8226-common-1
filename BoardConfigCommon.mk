@@ -93,9 +93,6 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 TARGET_ALLOW_LEGACY_AIDS := true
 TARGET_FS_CONFIG_GEN := $(VENDOR_PATH)/config.fs
 
-# Extended Filesystem Support
-TARGET_EXFAT_DRIVER := exfat
-
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
 
