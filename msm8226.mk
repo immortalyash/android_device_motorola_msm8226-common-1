@@ -191,7 +191,13 @@ PRODUCT_PACKAGES += \
 
 # Radio
 PRODUCT_PACKAGES += \
-    libcnefeatureconfig
+    libcnefeatureconfig \
+    librmnetctl \
+    libxml2 \
+    rild_socket \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += telephony-ext
 
 # Ramdisk
 PRODUCT_PACKAGES += \
